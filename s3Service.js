@@ -11,11 +11,11 @@ exports.s3UploadV2 = async (files) => {
         arr.push(file)
     })
     console.log(files)
+    const cur_date =  new Date().toISOString();
     const params = arr.map((file) => {
-      const cur_date =  new Date().toISOString();
         return {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `uploads/${cur_date}-${uuid()}/${file.originalname}`,
+            Key: `uploads/${cur_date}/${file.originalname}`,
             Body: file.buffer,
         };
     });
