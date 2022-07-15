@@ -32,8 +32,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// ["image", "jpeg"]
-
 const upload = multer({
   storage,
   fileFilter,
@@ -51,7 +49,7 @@ app.post("/upload", multiUpload, async (req, res) => {
   try {
     const results = await s3UploadV2(req.files);
     console.log(results);
-    return res.json({ status: "success" });
+    return res.json({ status: "success" , message: results});
   } catch (err) {
     console.log(err);
   }
