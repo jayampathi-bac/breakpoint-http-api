@@ -11,11 +11,11 @@ exports.s3UploadV2 = async (files) => {
         arr.push(file)
     })
     console.log(files)
-    const cur_date =  new Date().toISOString();
+    const dir =  `${new Date().toISOString()}-${uuid()}`
     const params = arr.map((file) => {
         return {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `unprocessed-data/${cur_date}-${uuid()}/${file.originalname}`,
+            Key: `unprocessed-data/${dir}/${file.originalname}`,
             Body: file.buffer,
         };
     });
