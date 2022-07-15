@@ -20,7 +20,9 @@ app.get("/hello", (req, res, next) => {
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.split("/")[0] === "image") {
+  if (file.mimetype === "text/html") {
+    cb(null, true);
+  } else if(file.mimetype === "text/css") {
     cb(null, true);
   } else {
     cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
@@ -35,8 +37,14 @@ const upload = multer({
   limits: { fileSize: 1000000000, files: 2 },
 });
 
+const multiUpload = upload.fields([
+  { name: "html", maxCount: 1 },
+  { name: "css", maxCount: 1 },
+]);
 
-app.post("/upload", upload.array("file"), async (req, res) => {
+app.post("/upload", multiUpload, async (req, res) => {
+  console.log('------------------------- multiple upload api called -----------------------------------')
+  console.log(req.files)
   try {
     const results = await s3UploadV2(req.files);
     console.log(results);
