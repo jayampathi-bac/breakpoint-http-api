@@ -20,11 +20,14 @@ app.get("/hello", (req, res, next) => {
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "text/html") {
+  console.log('file', file)
+  if (file.mimetype === 'text/html' && file.fieldname === 'html') {
     cb(null, true);
-  } else if(file.mimetype === "text/css") {
+  }
+  else if (file.mimetype === 'text/css' && file.fieldname === 'css') {
     cb(null, true);
-  } else {
+  }
+  else {
     cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
   }
 };
