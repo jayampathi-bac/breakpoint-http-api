@@ -55,8 +55,9 @@ app.post("/upload", multiUpload, async (req, res) => {
 });
 
 app.get("/scrape", async (req, res, next) => {
-    const url = req.body.url
-    const styleData = await saveScrappedData(url)
+    let { method, body } = req;
+    const { url } = body;
+    const styleData = await saveScrappedData(JSON.parse(url))
     return res.status(200).json({
         message: `scraped from ${url}`,
         styleData: styleData
