@@ -55,9 +55,10 @@ app.post("/upload", multiUpload, async (req, res) => {
 });
 
 app.get("/scrape", async (req, res, next) => {
-    let { method, body } = req;
-    const { url } = body;
-    const styleData = await saveScrappedData(JSON.parse(url))
+    // let { method, body } = req;
+    // const { url } = body;
+    const url = 'https://test-upload-bucket-devy.s3.amazonaws.com/unprocessed-data/2022-07-15T13%3A19%3A00.844Z-647ed5ed-4f4a-4dad-b605-ab1747750cfd/index.html'
+    const styleData = await saveScrappedData(url)
     return res.status(200).json({
         message: `scraped from ${url}`,
         styleData: styleData
