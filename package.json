@@ -11,6 +11,7 @@
     "express": "^4.17.1",
     "jsdom": "^20.0.0",
     "multer": "^1.4.5-lts.1",
+    "puppeteer-core": "^15.4.0",
     "serverless-http": "^2.7.0",
     "uuid": "^8.3.2"
   },
