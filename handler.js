@@ -5,6 +5,8 @@ const app = express();
 const {s3UploadV2} = require("./s3Service");
 const {saveScrappedData} = require("./src/scrape/web-scrape");
 const multer = require("multer");
+const {S3} = require("aws-sdk");
+const fs = require("fs");
 
 app.get("/", (req, res, next) => {
     return res.status(200).json({
@@ -62,6 +64,30 @@ app.get("/scrape", async (req, res, next) => {
     return res.status(200).json({
         message: `scraped from ${url}`,
         styleData: styleData
+    });
+});
+
+app.get("/save-tmp", async (req, res, next) => {
+    const s3 = new S3();
+    const fileKey = 'uploads/c0d34399-93d7-4d64-89ed-0e079cd1e03e-index.html';
+
+    const options = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: fileKey,
+    };
+
+    res.attachment(fileKey);
+    const path = '/tmp/test1/test.html'
+    const stream = fs.createWriteStream(path);
+
+    const fileStream = s3.getObject(options).createReadStream();
+    fileStream.pipe(stream);
+
+    const data = fs.readFileSync(path, {encoding:'utf8', flag:'r'});
+
+    return res.status(200).json({
+        message: `scraped from ${path}`,
+        file: data
     });
 });
 
