@@ -77,7 +77,7 @@ app.get("/save-tmp", async (req, res, next) => {
     };
 
     res.attachment(fileKey);
-    const path = '/tmp/test1/test.html'
+    const path = '/tmp/test.html'
     const stream = fs.createWriteStream(path);
 
     const fileStream = s3.getObject(options).createReadStream();
