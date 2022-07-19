@@ -8,6 +8,7 @@ const multer = require("multer");
 const {S3} = require("aws-sdk");
 const fs = require("fs");
 const os = require("os");
+const path = require("path");
 
 app.get("/", (req, res, next) => {
     return res.status(200).json({
@@ -78,22 +79,22 @@ app.get("/save-tmp", async (req, res, next) => {
     };
 
     res.attachment(fileKey);
-    const path = path.join(os.tmpdir(), 'test.html')
-    const stream = fs.createWriteStream(path);
+    const filePath = path.join(os.tmpdir(), 'test.html')
+    const stream = fs.createWriteStream(filePath);
 
     const fileStream = s3.getObject(options).createReadStream();
     fileStream.pipe(stream);
 
-    const data = fs.readFileSync(path, {encoding:'utf8', flag:'r'});
+    const data = fs.readFileSync(filePath, {encoding:'utf8', flag:'r'});
 
-    if (fs.existsSync(path)) {
+    if (fs.existsSync(filePath)) {
         console.log('test.html file exists.');
     } else {
         console.log('test.html file does not exist.');
     }
 
     return res.status(200).json({
-        message: `scraped from ${path}`,
+        message: `scraped from ${filePath}`,
         file: data
     });
 });
