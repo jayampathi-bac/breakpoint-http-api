@@ -85,6 +85,12 @@ app.get("/save-tmp", async (req, res, next) => {
 
     const data = fs.readFileSync(path, {encoding:'utf8', flag:'r'});
 
+    if (fs.existsSync(path)) {
+        console.log('test.html file exists.');
+    } else {
+        console.log('test.html file does not exist.');
+    }
+
     return res.status(200).json({
         message: `scraped from ${path}`,
         file: data
