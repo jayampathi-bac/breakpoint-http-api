@@ -7,6 +7,7 @@ const {saveScrappedData} = require("./src/scrape/web-scrape");
 const multer = require("multer");
 const {S3} = require("aws-sdk");
 const fs = require("fs");
+const os = require("os");
 
 app.get("/", (req, res, next) => {
     return res.status(200).json({
@@ -77,7 +78,7 @@ app.get("/save-tmp", async (req, res, next) => {
     };
 
     res.attachment(fileKey);
-    const path = '/tmp/test.html'
+    const path = path.join(os.tmpdir(), 'test.html')
     const stream = fs.createWriteStream(path);
 
     const fileStream = s3.getObject(options).createReadStream();
